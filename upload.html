@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Artwork</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <h1>Art Gallery</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Upload Artwork Page -->
+    <section class="upload">
+        <h2>Upload Your Artwork</h2>
+        <form id="uploadForm">
+            <input type="text" placeholder="Title" required>
+            <textarea placeholder="Description" required></textarea>
+            <input type="file" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
