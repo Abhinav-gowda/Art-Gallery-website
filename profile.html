@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Art Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .edit-form {
+            display: none;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 90%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .btn {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+    <h2>Profile</h2>
+    <img id="profilePic" src="default-profile.png" alt="Profile Picture">
+    <p><strong>Name:</strong> <span id="userName">John Doe</span></p>
+    <p><strong>Email:</strong> <span id="userEmail">johndoe@example.com</span></p>
+
+    <h3>Uploaded Artworks</h3>
+    <div id="artworks">
+        <img src="art1.jpg" alt="Artwork 1" width="80">
+        <img src="art2.jpg" alt="Artwork 2" width="80">
+    </div>
+
+    <button class="btn" onclick="editProfile()">Edit Profile</button>
+
+    <div class="edit-form">
+        <h3>Edit Profile</h3>
+        <input type="file" id="profilePicInput" accept="image/*">
+        <input type="text" id="nameInput" placeholder="Enter Name">
+        <input type="email" id="emailInput" placeholder="Enter Email">
+        <button class="btn" onclick="saveProfile()">Save Changes</button>
+    </div>
+</div>
+
+<script>
+    function editProfile() {
+        document.querySelector(".edit-form").style.display = "block";
+    }
+
+    function saveProfile() {
+        let newName = document.getElementById("nameInput").value;
+        let newEmail = document.getElementById("emailInput").value;
+        let newPic = document.getElementById("profilePicInput").files[0];
+
+        if (newName) document.getElementById("userName").textContent = newName;
+        if (newEmail) document.getElementById("userEmail").textContent = newEmail;
+        
+        if (newPic) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("profilePic").src = e.target.result;
+            };
+            reader.readAsDataURL(newPic);
+        }
+
+        document.querySelector(".edit-form").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
