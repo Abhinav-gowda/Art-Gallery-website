@@ -1,4 +1,4 @@
-/* Art Gallery - JavaScript */
+
 document.addEventListener("DOMContentLoaded", () => {
     loadGallery();
 });
@@ -22,7 +22,7 @@ function loadGallery() {
     });
 }
 
-// Handle Upload Form
+
 const uploadForm = document.getElementById("uploadForm");
 if (uploadForm) {
     uploadForm.addEventListener("submit", (e) => {
@@ -31,7 +31,7 @@ if (uploadForm) {
     });
 }
 
-// Handle Login Form
+
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
     loginForm.addEventListener("submit", (e) => {
