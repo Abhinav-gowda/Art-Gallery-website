@@ -1,97 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Art Gallery</title>
+    <title>User Profile</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
+            background-color: #f4f4f4;
             text-align: center;
         }
-        .profile-container {
+
+        nav {
+            background-color: #333;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .profile,
+        .user-artworks {
             max-width: 600px;
-            margin: 50px auto;
+            margin: 30px auto;
             background: white;
             padding: 20px;
+            border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
         }
-        img {
-            width: 100px;
-            height: 100px;
+
+        .profile-info img {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
+            margin-bottom: 10px;
         }
-        .edit-form {
+
+        .edit-profile {
             display: none;
+            margin-top: 15px;
         }
-        input, button {
+
+        input,
+        button {
+            width: 100%;
             padding: 10px;
-            margin: 10px;
-            width: 90%;
+            margin: 5px 0;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
-        .btn {
+
+        button {
             background-color: #333;
             color: white;
             cursor: pointer;
         }
-    </style>
-</head>
-<body>
 
-<div class="profile-container">
-    <h2>Profile</h2>
-    <img id="profilePic" src="default-profile.png" alt="Profile Picture">
-    <p><strong>Name:</strong> <span id="userName">John Doe</span></p>
-    <p><strong>Email:</strong> <span id="userEmail">johndoe@example.com</span></p>
-
-    <h3>Uploaded Artworks</h3>
-    <div id="artworks">
-        <img src="art1.jpg" alt="Artwork 1" width="80">
-        <img src="art2.jpg" alt="Artwork 2" width="80">
-    </div>
-
-    <button class="btn" onclick="editProfile()">Edit Profile</button>
-
-    <div class="edit-form">
-        <h3>Edit Profile</h3>
-        <input type="file" id="profilePicInput" accept="image/*">
-        <input type="text" id="nameInput" placeholder="Enter Name">
-        <input type="email" id="emailInput" placeholder="Enter Email">
-        <button class="btn" onclick="saveProfile()">Save Changes</button>
-    </div>
-</div>
-
-<script>
-    function editProfile() {
-        document.querySelector(".edit-form").style.display = "block";
-    }
-
-    function saveProfile() {
-        let newName = document.getElementById("nameInput").value;
-        let newEmail = document.getElementById("emailInput").value;
-        let newPic = document.getElementById("profilePicInput").files[0];
-
-        if (newName) document.getElementById("userName").textContent = newName;
-        if (newEmail) document.getElementById("userEmail").textContent = newEmail;
-        
-        if (newPic) {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById("profilePic").src = e.target.result;
-            };
-            reader.readAsDataURL(newPic);
+        .art-grid {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        document.querySelector(".edit-form").style.display = "none";
-    }
-</script>
+        .art-grid img {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <h1>Art Gallery</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="profile.html">Profile</a></li>
+            <li><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile">
+        <h2>User Profile</h2>
+        <div class="profile-info">
+            <img id="profilePic" src="default-profile.jpg" alt="Profile Picture">
+            <h3 id="userName">John Doe</h3>
+            <p id="userEmail">john@example.com</p>
+            <button id="editProfileBtn">Edit Profile</button>
+        </div>
+
+        <!-- Edit Profile Form -->
+        <div id="editProfile" class="edit-profile">
+            <h3>Edit Profile</h3>
+            <form id="editProfileForm">
+                <input type="text" id="newName" placeholder="New Name">
+                <input type="email" id="newEmail" placeholder="New Email">
+                <input type="file" id="newProfilePic" accept="image/*">
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Uploaded Artworks -->
+    <section class="user-artworks">
+        <h2>My Artworks</h2>
+        <div class="art-grid" id="userGallery">
+            <img src="art1.jpg" alt="Artwork 1">
+            <img src="art2.jpg" alt="Artwork 2">
+            <img src="art3.jpg" alt="Artwork 3">
+        </div>
+    </section>
+
+    <script>
+        document.getElementById("editProfileBtn").addEventListener("click", function () {
+            document.getElementById("editProfile").style.display = "block";
+        });
+
+        document.getElementById("editProfileForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            let newName = document.getElementById("newName").value;
+            let newEmail = document.getElementById("newEmail").value;
+            let newPic = document.getElementById("newProfilePic").files[0];
+
+            if (newName) document.getElementById("userName").textContent = newName;
+            if (newEmail) document.getElementById("userEmail").textContent = newEmail;
+
+            if (newPic) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("profilePic").src = e.target.result;
+                };
+                reader.readAsDataURL(newPic);
+            }
+
+            document.getElementById("editProfile").style.display = "none";
+        });
+    </script>
 
 </body>
+
 </html>
