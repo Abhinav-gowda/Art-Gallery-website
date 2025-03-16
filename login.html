@@ -4,46 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Artwork - Art Gallery</title>
+    <title>Login - Art Gallery</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .container {
-            width: 350px;
-            margin: 50px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        input,
-        textarea {
-            width: 90%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .toggle {
-            margin-top: 15px;
-            cursor: pointer;
-            color: blue;
-        }
-
-        .hidden {
-            display: none;
-        }
+        /* Your existing styles */
     </style>
 </head>
 
@@ -60,7 +24,6 @@
         </ul>
     </nav>
 
-    
     <div class="container" id="authContainer">
         <h2 id="formTitle">Sign In</h2>
 
@@ -81,43 +44,15 @@
         <p class="toggle" id="toggleForm">Don't have an account? <b>Sign Up</b></p>
     </div>
 
-   
-    <section class="upload hidden" id="uploadSection">
-        <h2>Upload Your Artwork</h2>
-        <form id="uploadForm">
-            <input type="text" id="artTitle" placeholder="Title" required>
-            <textarea id="artDescription" placeholder="Description" required></textarea>
-            <input type="file" id="artFile" accept="image/*" required>
-            <button type="submit">Upload</button>
-        </form>
-    </section>
-
     <script>
-       
         document.addEventListener("DOMContentLoaded", function () {
             let user = localStorage.getItem("user");
             if (user) {
-                showUploadSection();
-            } else {
-                showAuthSection();
+                // Redirect to home page if already logged in
+                window.location.href = "index.html";
             }
         });
 
-        function showUploadSection() {
-            document.getElementById("authContainer").classList.add("hidden");
-            document.getElementById("uploadSection").classList.remove("hidden");
-            document.getElementById("loginNav").classList.add("hidden");
-            document.getElementById("logoutNav").classList.remove("hidden");
-        }
-
-        function showAuthSection() {
-            document.getElementById("authContainer").classList.remove("hidden");
-            document.getElementById("uploadSection").classList.add("hidden");
-            document.getElementById("loginNav").classList.remove("hidden");
-            document.getElementById("logoutNav").classList.add("hidden");
-        }
-
-       
         document.getElementById("toggleForm").addEventListener("click", function () {
             let loginForm = document.getElementById("loginForm");
             let signupForm = document.getElementById("signupForm");
@@ -137,7 +72,6 @@
             }
         });
 
-        
         document.getElementById("signupForm").addEventListener("submit", function (event) {
             event.preventDefault();
             let name = document.getElementById("signupName").value;
@@ -152,10 +86,9 @@
 
             localStorage.setItem("user", JSON.stringify({ name, email }));
             alert("Account created successfully! You are now logged in.");
-            showUploadSection();
+            window.location.href = "index.html"; // Redirect to home page
         });
 
-      
         document.getElementById("loginForm").addEventListener("submit", function (event) {
             event.preventDefault();
             let email = document.getElementById("loginEmail").value;
@@ -165,17 +98,16 @@
 
             if (user && user.email === email) {
                 alert("Logged in successfully!");
-                showUploadSection();
+                window.location.href = "index.html"; // Redirect to home page
             } else {
                 alert("User not found. Please sign up.");
             }
         });
 
-        
         function logout() {
             localStorage.removeItem("user");
             alert("Logged out successfully!");
-            showAuthSection();
+            window.location.href = "login.html";
         }
     </script>
 
