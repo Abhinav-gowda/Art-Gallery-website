@@ -1,66 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .profile,
-        .user-artworks {
-            max-width: 600px;
-            margin: 30px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .profile-info img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-        }
-
-        .edit-profile {
-            display: none;
-            margin-top: 15px;
-        }
-
-        input,
-        button {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ddd;
-        }
-
-        button {
-            background-color: #333;
-            color: white;
-            cursor: pointer;
-        }
-
-        .art-grid {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .art-grid img {
-            width: 100px;
-            height: 100px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
+        /* Your existing styles */
     </style>
 </head>
-
 <body>
     <nav>
         <h1>Art Gallery</h1>
@@ -68,11 +16,11 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="upload.html">Upload</a></li>
             <li><a href="profile.html">Profile</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li id="loginNav"><a href="login.html">Login</a></li>
+            <li id="logoutNav" class="hidden"><a href="#" onclick="logout()">Logout</a></li>
         </ul>
     </nav>
 
-    
     <section class="profile">
         <h2>User Profile</h2>
         <div class="profile-info">
@@ -82,7 +30,6 @@
             <button id="editProfileBtn">Edit Profile</button>
         </div>
 
-        
         <div id="editProfile" class="edit-profile">
             <h3>Edit Profile</h3>
             <form id="editProfileForm">
@@ -94,7 +41,6 @@
         </div>
     </section>
 
-   
     <section class="user-artworks">
         <h2>My Artworks</h2>
         <div class="art-grid" id="userGallery">
@@ -105,6 +51,24 @@
     </section>
 
     <script>
+        // Check if the user is authenticated
+        document.addEventListener("DOMContentLoaded", function () {
+            let user = localStorage.getItem("user");
+            if (!user) {
+                // Redirect to login page if not authenticated
+                window.location.href = "login.html";
+            } else {
+                // Show the logout button and hide the login button
+                document.getElementById("loginNav").classList.add("hidden");
+                document.getElementById("logoutNav").classList.remove("hidden");
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "login.html";
+        }
+
         document.getElementById("editProfileBtn").addEventListener("click", function () {
             document.getElementById("editProfile").style.display = "block";
         });
@@ -132,5 +96,4 @@
     </script>
 
 </body>
-
 </html>
