@@ -13,11 +13,11 @@
             <li><a href="index.html">Home</a></li>
             <li><a href="upload.html">Upload</a></li>
             <li><a href="profile.html">Profile</a></li>
-            <li><a href="login.html">Login</a></li>
+            <li id="loginNav"><a href="login.html">Login</a></li>
+            <li id="logoutNav" class="hidden"><a href="#" onclick="logout()">Logout</a></li>
         </ul>
     </nav>
 
- 
     <section class="upload">
         <h2>Upload Your Artwork</h2>
         <form id="uploadForm">
@@ -27,6 +27,26 @@
             <button type="submit">Upload</button>
         </form>
     </section>
+
+    <script>
+        // Check if the user is authenticated
+        document.addEventListener("DOMContentLoaded", function () {
+            let user = localStorage.getItem("user");
+            if (!user) {
+                // Redirect to login page if not authenticated
+                window.location.href = "login.html";
+            } else {
+                // Show the logout button and hide the login button
+                document.getElementById("loginNav").classList.add("hidden");
+                document.getElementById("logoutNav").classList.remove("hidden");
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "login.html";
+        }
+    </script>
 
     <script src="script.js"></script>
 </body>
