@@ -1,6 +1,12 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-    loadGallery();
+    let user = localStorage.getItem("user");
+    if (!user) {
+        // Redirect to login page if not authenticated
+        window.location.href = "login.html";
+    } else {
+        // Load the gallery if authenticated
+        loadGallery();
+    }
 });
 
 function loadGallery() {
@@ -22,7 +28,6 @@ function loadGallery() {
     });
 }
 
-
 const uploadForm = document.getElementById("uploadForm");
 if (uploadForm) {
     uploadForm.addEventListener("submit", (e) => {
@@ -30,7 +35,6 @@ if (uploadForm) {
         alert("Artwork Uploaded Successfully!");
     });
 }
-
 
 const loginForm = document.getElementById("loginForm");
 if (loginForm) {
