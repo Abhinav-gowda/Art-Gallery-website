@@ -6,6 +6,7 @@
     <title>Login | Art Gallery</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <nav>
@@ -36,12 +37,13 @@
 
     <div class="main-container">
         <div class="auth-container fade-in">
-            <h2 id="formTitle">Sign In</h2>
+            <h2>Log in to ArtGallery</h2>
+            <p class="login-info">Only login via email, Google, or +86 phone number login is supported in your region.</p>
             
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="loginEmail">Email</label>
-                    <input type="email" id="loginEmail" placeholder="Enter your email" required>
+                    <label for="loginCredential">Phone number / email address</label>
+                    <input type="text" id="loginCredential" placeholder="Enter phone or email" required>
                 </div>
                 
                 <div class="form-group">
@@ -49,7 +51,24 @@
                     <input type="password" id="loginPassword" placeholder="Enter your password" required>
                 </div>
                 
-                <button type="submit" class="btn">Login</button>
+                <div class="form-group terms">
+                    <p>By signing up or logging in, you consent to ArtGallery's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+                </div>
+                
+                <button type="submit" class="btn">Log in</button>
+                
+                <div class="auth-links">
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                    <a href="#" id="showSignup">Sign up</a>
+                </div>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <button type="button" class="btn btn-google">
+                    <i class="fab fa-google"></i> Log in with Google
+                </button>
             </form>
             
             <form id="signupForm" class="hidden">
@@ -59,8 +78,8 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="signupEmail">Email</label>
-                    <input type="email" id="signupEmail" placeholder="Enter your email" required>
+                    <label for="signupCredential">Phone number / email address</label>
+                    <input type="text" id="signupCredential" placeholder="Enter phone or email" required>
                 </div>
                 
                 <div class="form-group">
@@ -73,10 +92,17 @@
                     <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
                 </div>
                 
+                <div class="form-group terms">
+                    <p>By signing up or logging in, you consent to ArtGallery's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
+                </div>
+                
                 <button type="submit" class="btn">Sign Up</button>
+                
+                <div class="auth-links">
+                    <span>Already have an account?</span>
+                    <a href="#" id="showLogin">Log in</a>
+                </div>
             </form>
-            
-            <p class="auth-toggle" id="toggleForm">Don't have an account? <span>Sign Up</span></p>
         </div>
     </div>
 
@@ -94,29 +120,30 @@
             }
         });
 
-        document.getElementById("toggleForm").addEventListener("click", function () {
-            let loginForm = document.getElementById("loginForm");
-            let signupForm = document.getElementById("signupForm");
-            let formTitle = document.getElementById("formTitle");
-            let toggleText = document.getElementById("toggleForm");
-
-            if (loginForm.classList.contains("hidden")) {
-                loginForm.classList.remove("hidden");
-                signupForm.classList.add("hidden");
-                formTitle.textContent = "Sign In";
-                toggleText.innerHTML = "Don't have an account? <span>Sign Up</span>";
-            } else {
-                loginForm.classList.add("hidden");
-                signupForm.classList.remove("hidden");
-                formTitle.textContent = "Sign Up";
-                toggleText.innerHTML = "Already have an account? <span>Sign In</span>";
-            }
+        // Toggle between login and signup forms
+        document.getElementById("showSignup").addEventListener("click", function(e) {
+            e.preventDefault();
+            document.getElementById("loginForm").classList.add("hidden");
+            document.getElementById("signupForm").classList.remove("hidden");
         });
 
+        document.getElementById("showLogin").addEventListener("click", function(e) {
+            e.preventDefault();
+            document.getElementById("signupForm").classList.add("hidden");
+            document.getElementById("loginForm").classList.remove("hidden");
+        });
+
+        // Google login button
+        document.querySelector(".btn-google").addEventListener("click", function() {
+            // In a real app, this would trigger Google OAuth flow
+            alert("Google login would be implemented here");
+        });
+
+        // Signup form submission
         document.getElementById("signupForm").addEventListener("submit", function (event) {
             event.preventDefault();
             let name = document.getElementById("signupName").value;
-            let email = document.getElementById("signupEmail").value;
+            let credential = document.getElementById("signupCredential").value;
             let password = document.getElementById("signupPassword").value;
             let confirmPassword = document.getElementById("confirmPassword").value;
 
@@ -125,23 +152,32 @@
                 return;
             }
 
-            localStorage.setItem("user", JSON.stringify({ name, email }));
+            // Determine if credential is email or phone
+            let isEmail = credential.includes("@");
+            let userData = { 
+                name: name,
+                [isEmail ? "email" : "phone"]: credential 
+            };
+
+            localStorage.setItem("user", JSON.stringify(userData));
             alert("Account created successfully! You are now logged in.");
-            window.location.href = "index.html"; // Redirect to home page
+            window.location.href = "index.html";
         });
 
+        // Login form submission
         document.getElementById("loginForm").addEventListener("submit", function (event) {
             event.preventDefault();
-            let email = document.getElementById("loginEmail").value;
+            let credential = document.getElementById("loginCredential").value;
             let password = document.getElementById("loginPassword").value;
 
             let user = JSON.parse(localStorage.getItem("user"));
 
-            if (user && user.email === email) {
+            // Simple check - in real app would verify password and credential
+            if (user && (user.email === credential || user.phone === credential)) {
                 alert("Logged in successfully!");
-                window.location.href = "index.html"; // Redirect to home page
+                window.location.href = "index.html";
             } else {
-                alert("User not found. Please sign up.");
+                alert("Invalid credentials. Please sign up.");
             }
         });
     </script>
