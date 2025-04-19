@@ -185,3 +185,77 @@ function showNotification(message, type = 'success') {
 
 // Initialize animations when page is loaded
 document.addEventListener('DOMContentLoaded', addAnimations);
+
+
+
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+            document.getElementById('navMenu').classList.toggle('show');
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = localStorage.getItem("user");
+            const loginNav = document.getElementById("loginNav");
+            const logoutNav = document.getElementById("logoutNav");
+            const uploadNav = document.getElementById("uploadNav");
+            const profileNav = document.getElementById("profileNav");
+
+            if (!user) {
+                loginNav.classList.remove("hidden");
+                logoutNav.classList.add("hidden");
+                uploadNav.classList.add("hidden");
+                profileNav.classList.add("hidden");
+            } else {
+                loginNav.classList.add("hidden");
+                logoutNav.classList.remove("hidden");
+                uploadNav.classList.remove("hidden");
+                profileNav.classList.remove("hidden");
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem("user");
+            window.location.href = "login.html";
+        }
+
+        const searchInput = document.getElementById("searchInput");
+        const searchButton = document.getElementById("searchButton");
+        const artGallery = document.getElementById("artGallery");
+        const noResultsMessage = document.getElementById("noResultsMessage");
+
+        searchButton.addEventListener("click", performSearch);
+        searchInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const artItems = artGallery.querySelectorAll('.art-item');
+            let foundItems = 0;
+
+            artItems.forEach(item => {
+                const title = item.dataset.title ? item.dataset.title.toLowerCase() : '';
+                const artist = item.dataset.artist ? item.dataset.artist.toLowerCase() : '';
+                const tags = item.dataset.tags ? item.dataset.tags.toLowerCase() : '';
+                const searchableText = `${title} ${artist} ${tags}`;
+
+                if (searchTerm === '' || searchableText.includes(searchTerm)) {
+                    item.classList.remove('hidden');
+                    item.style.display = '';
+                    foundItems++;
+                } else {
+                    item.classList.add('hidden');
+                    item.style.display = 'none';
+                }
+            });
+
+            if (foundItems === 0 && searchTerm !== '') {
+                noResultsMessage.classList.remove('hidden');
+                noResultsMessage.textContent = `No artworks found matching "${searchInput.value}".`;
+            } else {
+                noResultsMessage.classList.add('hidden');
+            }
+        }
+   
