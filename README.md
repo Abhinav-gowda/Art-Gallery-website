@@ -27,5 +27,5 @@ A responsive web application that allows users to explore, upload, and manage di
 
 ---
 
-## 📁 File Structure
+
 
